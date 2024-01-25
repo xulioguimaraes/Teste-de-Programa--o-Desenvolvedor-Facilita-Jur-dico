@@ -76,6 +76,18 @@ Agora você tem uma cópia local do projeto em seu ambiente de desenvolvimento.
      yarn run start:dev
      ```
 
+### Documentação de Rotas
+
+A documentação detalhada das rotas do backend pode ser acessada através do Swagger. Siga os passos abaixo para explorar a documentação:
+
+1. Após iniciar o backend, abra o seu navegador e acesse a seguinte URL:
+
+   [http://127.0.0.1:4000/docs](http://127.0.0.1:4000/docs)
+
+2. Navegue pela documentação interativa para obter informações sobre todas as rotas disponíveis, parâmetros necessários e exemplos de solicitações e respostas.
+
+A documentação do Swagger proporciona uma visão clara e organizada das APIs do backend, facilitando o entendimento e a interação durante o desenvolvimento e testes.
+
 #### Configuração do Frontend
 
 1. **Configuração do .env:**
