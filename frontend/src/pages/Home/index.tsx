@@ -52,21 +52,22 @@ export const Home = () => {
     setOpenModal(false);
   };
   const getListClient = async () => {
-    setIsLoading(true);
-    const response = await clients.list(paramsConfig);
+    try {
+      setIsLoading(true);
 
-    if (response.status === 200) {
+      const response = await clients.list(paramsConfig);
+
       setDataPage(response.data);
-    } else {
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message;
       setOpenSnack({
         open: true,
-        message:
-          response?.response?.data?.message ||
-          "Ocorreu um erro ao buscar lista de clientes",
+        message: errorMessage || "Ocorreu um erro ao buscar lista de clientes",
         variant: "error",
       });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
   const debounceChange = debounce((value, name) => {
     setParamsConfig((prev) => ({
@@ -80,9 +81,8 @@ export const Home = () => {
   };
 
   const handleDelete = async (id: number) => {
-    const response = await clients.delete(id);
-
-    if (response.status === 200) {
+    try {
+      await clients.delete(id);
       setOpenSnack({
         open: true,
         message: "Cliente deletado",
@@ -90,12 +90,12 @@ export const Home = () => {
       });
       const copyParams = { ...paramsConfig };
       setParamsConfig(copyParams);
-    } else {
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.message;
+
       setOpenSnack({
         open: true,
-        message:
-          response?.response?.data?.message ||
-          "Ocorreu um erro ao deletar cliente",
+        message: errorMessage || "Ocorreu um erro ao deletar cliente",
         variant: "error",
       });
     }
@@ -187,7 +187,7 @@ export const Home = () => {
           handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
       )}
-      <Modal onClose={handleClose} open={openModal} />
+      {openModal && <Modal onClose={handleClose} open={openModal} />}
     </>
   );
 };
