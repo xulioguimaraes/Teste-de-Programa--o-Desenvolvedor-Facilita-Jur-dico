@@ -1,4 +1,8 @@
-import { CLientDTO } from 'src/clients/dtos/clients';
+import {
+  CLientDTO,
+  ClientTypes,
+  ListClientsRequst,
+} from 'src/clients/dtos/clients';
 import { ClientsERPRepository } from '../clients-erp.service';
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { Pool } from 'pg';
@@ -10,8 +14,14 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
   async create(data: CLientDTO): Promise<void> {
     try {
       const query = {
-        text: 'INSERT INTO clients (name, email, phone) VALUES ($1, $2, $3) RETURNING *',
-        values: [data.name, data.email, data.phone],
+        text: 'INSERT INTO clients (name, email, phone, coordinateX, coordinateY) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        values: [
+          data.name,
+          data.email,
+          data.phone,
+          data.coordinatex,
+          data.coordinatey,
+        ],
       };
 
       await this.pool.query(query);
@@ -66,15 +76,28 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
       throw error;
     }
   }
-  async list(): Promise<CLientDTO[]> {
-    const page = 1; // Número da página desejada
-    const pageSize = 10; // Número de resultados por página
+  async list(params: ListClientsRequst): Promise<CLientDTO[]> {
+    const { page, per_page, search_term } = params;
 
-    const offset = (page - 1) * pageSize;
+    const offset = (+page - 1) * +per_page;
+    const searchCondition = search_term
+      ? `WHERE name ILIKE $3 OR phone ILIKE $3 OR email ILIKE $3`
+      : '';
 
+    console.log({ page, per_page, search_term });
     const query = {
-      text: 'SELECT * FROM clients ORDER BY id LIMIT $1 OFFSET $2',
-      values: [pageSize, offset],
+      text: `SELECT * FROM clients ${searchCondition} ORDER BY id LIMIT $1 OFFSET $2`,
+      values: search_term
+        ? [per_page, offset, `%${search_term}%`]
+        : [per_page, offset],
+    };
+
+    const result = await this.pool.query(query);
+    return result.rows;
+  }
+  async calculateDistance(): Promise<ClientTypes[]> {
+    const query = {
+      text: `SELECT * FROM clients`,
     };
 
     const result = await this.pool.query(query);

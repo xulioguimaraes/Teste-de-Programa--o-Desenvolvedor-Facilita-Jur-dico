@@ -1,8 +1,8 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CLientDTO {
-  id?: string;
+  id?: number;
   @IsString({
     message: 'Você deve enviar o nome do cliente',
   })
@@ -20,4 +20,46 @@ export class CLientDTO {
   })
   @ApiProperty()
   phone: string;
+
+  @IsString({
+    message: 'Você deve enviar a coordenada X',
+  })
+  @ApiProperty()
+  coordinatex: string;
+  @IsString({
+    message: 'Você deve enviar a coordenada Y',
+  })
+  @ApiProperty()
+  coordinatey: string;
 }
+
+export class ListClientsRequst {
+  @ApiPropertyOptional()
+  @IsString({
+    message: `O campo searchTerm deve ser uma string`,
+  })
+  @IsOptional()
+  search_term?: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'Page é obrigatório' })
+  page: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'PerPage é obrigatório' })
+  per_page: string;
+}
+
+export type ClientTypes = {
+  id?: number;
+
+  name: string;
+
+  email: string;
+
+  phone: string;
+
+  coordinatex: number;
+
+  coordinatey: number;
+};

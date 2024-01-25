@@ -6,10 +6,11 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CLientDTO } from './dtos/clients';
+import { CLientDTO, ClientTypes, ListClientsRequst } from './dtos/clients';
 
 @Controller('clients')
 export class ClientsController {
@@ -34,8 +35,18 @@ export class ClientsController {
     description: 'Listagem de usuarios',
   })
   @Get('/')
-  async list(): Promise<CLientDTO[]> {
-    return this.clientsService.list();
+  async list(@Query() query: ListClientsRequst): Promise<CLientDTO[]> {
+    return this.clientsService.list(query);
+  }
+
+  @ApiTags('Clientes')
+  @ApiResponse({
+    status: 200,
+    description: 'Deletar usuario',
+  })
+  @Get('/calculate')
+  async calculateDistance(): Promise<ClientTypes[]> {
+    return await this.clientsService.calculateDistance();
   }
 
   @ApiTags('Clientes')
