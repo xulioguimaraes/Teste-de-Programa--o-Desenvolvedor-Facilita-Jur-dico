@@ -111,7 +111,6 @@ export const TableHome = ({
   handleChangePage,
   handleChangeRowsPerPage,
 }: ITableHomeProps) => {
-  console.log(dataPage?.length);
   const onChangePage = (event: unknown, newPage: number) => {
     handleChangePage(newPage);
   };
