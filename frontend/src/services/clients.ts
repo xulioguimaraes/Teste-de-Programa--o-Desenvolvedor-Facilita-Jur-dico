@@ -13,32 +13,14 @@ interface IParamsConfig {
   per_page: number;
 }
 export default {
-  list: async (params: IParamsConfig) => {
-    const response = await api
-      .get("/clients", {
-        params,
-      })
-      .then((res) => ({ ...res }))
-      .catch((error) => ({ ...error }));
-    return response;
-  },
-  create: async (data: IForm) => {
-    const response = await api.post("/clients", data);
-
-    return response;
-  },
-  find: async (id: number) => {
-    const response = await api
-      .get(`/clients/${id}`)
-      .then((res) => ({ ...res }))
-      .catch((error) => ({ ...error }));
-    return response;
-  },
-  delete: async (id: number) => {
-    const response = await api
-      .delete(`/clients/${id}`)
-      .then((res) => ({ ...res }))
-      .catch((error) => ({ ...error }));
-    return response;
-  },
+  list: async (params: IParamsConfig) =>
+    await api.get("/clients", {
+      params,
+    }),
+  create: async (data: IForm) => await api.post("/clients", data),
+  update: async (id: string, data: IForm) =>
+    await api.put(`/clients/${id}`, data),
+  find: async (id: string) => await api.get(`/clients/${id}`),
+  delete: async (id: number) => await api.delete(`/clients/${id}`),
+  calculate: async () => await api.get("/clients/calculate"),
 };
