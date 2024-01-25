@@ -30,9 +30,9 @@ Este projeto utiliza um conjunto moderno de tecnologias para proporcionar uma ex
 
 Claro, aqui está uma seção "Como Executar o Projeto" que você pode adicionar ao seu README.md:
 
-### Como Executar o Projeto
+## Como Executar o Projeto
 
-### Como Clonar o Projeto
+### Clonar Projeto
 
 Para obter uma cópia local do projeto, siga os passos abaixo:
 
@@ -76,7 +76,7 @@ Agora você tem uma cópia local do projeto em seu ambiente de desenvolvimento.
      yarn run start:dev
      ```
 
-### Documentação de Rotas
+#### Documentação de Rotas
 
 A documentação detalhada das rotas do backend pode ser acessada através do Swagger. Siga os passos abaixo para explorar a documentação:
 
