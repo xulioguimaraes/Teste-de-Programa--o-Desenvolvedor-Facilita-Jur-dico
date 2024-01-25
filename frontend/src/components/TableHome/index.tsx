@@ -111,6 +111,7 @@ export const TableHome = ({
   handleChangePage,
   handleChangeRowsPerPage,
 }: ITableHomeProps) => {
+  console.log(dataPage?.length);
   const onChangePage = (event: unknown, newPage: number) => {
     handleChangePage(newPage);
   };
@@ -141,7 +142,7 @@ export const TableHome = ({
         component="div"
         count={dataPage?.length}
         rowsPerPage={params.per_page}
-        page={params.page}
+        page={params.page - 1}
         onPageChange={onChangePage}
         onRowsPerPageChange={onChangeRowsPerPage}
         labelRowsPerPage={"Linhas por pagina"}

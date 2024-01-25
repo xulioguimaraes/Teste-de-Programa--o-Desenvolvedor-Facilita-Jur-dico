@@ -4,6 +4,8 @@ interface IForm {
   name: string;
   phone: string;
   email: string;
+  coordinatex: string;
+  coordinatey: string;
 }
 interface IParamsConfig {
   search_term: string;
@@ -21,10 +23,8 @@ export default {
     return response;
   },
   create: async (data: IForm) => {
-    const response = await api
-      .post("/clients", data)
-      .then((res) => ({ ...res }))
-      .catch((error) => ({ ...error }));
+    const response = await api.post("/clients", data);
+
     return response;
   },
   find: async (id: number) => {
