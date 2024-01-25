@@ -1,0 +1,26 @@
+
+
+CREATE OR REPLACE FUNCTION update_clients_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = CURRENT_TIMESTAMP;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER clients_update_trigger
+BEFORE UPDATE ON clients
+FOR EACH ROW EXECUTE FUNCTION update_clients_updated_at();
+
+
+CREATE TABLE clients (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  coordinatex NUMERIC,
+  coordinatey NUMERIC,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
