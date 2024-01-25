@@ -11,4 +11,8 @@ export const router = createBrowserRouter([
     path: "/cadastrar",
     element: <Register />,
   },
+  {
+    path: `/editar/:id`,
+    element: <Register />,
+  },
 ]);

@@ -5,10 +5,17 @@ interface IForm {
   phone: string;
   email: string;
 }
+interface IParamsConfig {
+  search_term: string;
+  page: number;
+  per_page: number;
+}
 export default {
-  list: async () => {
+  list: async (params: IParamsConfig) => {
     const response = await api
-      .get("/clients")
+      .get("/clients", {
+        params,
+      })
       .then((res) => ({ ...res }))
       .catch((error) => ({ ...error }));
     return response;
@@ -16,6 +23,20 @@ export default {
   create: async (data: IForm) => {
     const response = await api
       .post("/clients", data)
+      .then((res) => ({ ...res }))
+      .catch((error) => ({ ...error }));
+    return response;
+  },
+  find: async (id: number) => {
+    const response = await api
+      .get(`/clients/${id}`)
+      .then((res) => ({ ...res }))
+      .catch((error) => ({ ...error }));
+    return response;
+  },
+  delete: async (id: number) => {
+    const response = await api
+      .delete(`/clients/${id}`)
       .then((res) => ({ ...res }))
       .catch((error) => ({ ...error }));
     return response;
