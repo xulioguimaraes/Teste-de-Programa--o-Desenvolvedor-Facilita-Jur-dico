@@ -80,12 +80,13 @@ export const Modal = ({ onClose, open }: IModalProps) => {
           <Box
             mt={2}
             display={"grid"}
-            gridTemplateColumns={"1fr 1fr 1fr"}
+            gridTemplateColumns={"1fr 1fr 1fr 1fr"}
             gap={2}
           >
             <strong>Nome</strong>
             <strong>Telefone</strong>
             <strong>Email</strong>
+            <strong>Coordenadas (x, y)</strong>
           </Box>
           <Box>
             {data.map((item) => (
@@ -93,12 +94,15 @@ export const Modal = ({ onClose, open }: IModalProps) => {
                 <Box
                   key={item.email}
                   display={"grid"}
-                  gridTemplateColumns={"1fr 1fr 1fr"}
+                  gridTemplateColumns={"1fr 1fr 1fr 1fr"}
                   gap={2}
                 >
                   <span>{item.name}</span>
                   <span>{item.phone}</span>
                   <span>{item.email}</span>
+                  <span>
+                    {item.coordinatex}, {item.coordinatey}
+                  </span>
                 </Box>
                 <Divider />
               </>

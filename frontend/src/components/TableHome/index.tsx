@@ -14,18 +14,11 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-interface IDataPage {
-  name: string;
-  id: number;
-  phone: string;
-  email: string;
-}
-interface IParamsConfig {
-  search_term: string;
-  page: number;
-  per_page: number;
-}
-interface ITableHomeProps {
+
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useState } from "react";
+import { IDataPage, IParamsConfig } from "../../pages/Home/types";
+export interface ITableHomeProps {
   dataPage: IDataPage[];
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
@@ -34,16 +27,11 @@ interface ITableHomeProps {
   handleChangePage: (page: number) => void;
 }
 
-interface IRowProps {
-  name: string;
-  id: number;
-  phone: string;
-  email: string;
+export interface IRowProps extends IDataPage {
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
 }
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useState } from "react";
+
 const Rows = ({ onDelete, onEdit, ...row }: IRowProps) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -100,6 +88,9 @@ const Rows = ({ onDelete, onEdit, ...row }: IRowProps) => {
       <TableCell align="right">{row.name}</TableCell>
       <TableCell align="right">{row.email}</TableCell>
       <TableCell align="right">{row.phone}</TableCell>
+      <TableCell align="right">
+        {row.coordinatex}, {row.coordinatey}
+      </TableCell>
     </TableRow>
   );
 };
@@ -128,6 +119,7 @@ export const TableHome = ({
             <TableCell align="right">Nome</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Telefone</TableCell>
+            <TableCell align="right">Coordenadas (x, y)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

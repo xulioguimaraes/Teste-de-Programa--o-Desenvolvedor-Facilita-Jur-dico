@@ -19,13 +19,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useStackbar } from "../../hooks/useSnackBar";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useEffect, useState } from "react";
-interface IForm {
-  name: string;
-  phone: string;
-  email: string;
-  coordX: number;
-  coordY: number;
-}
+import { IForm } from "./types";
 
 export const Register = () => {
   const navigate = useNavigate();

@@ -16,17 +16,8 @@ import { TableHome } from "../../components/TableHome";
 import { useStackbar } from "../../hooks/useSnackBar";
 import debounce from "debounce";
 import { Modal } from "../../components/Modal";
-interface IDataPage {
-  name: string;
-  id: number;
-  phone: string;
-  email: string;
-}
-interface IParamsConfig {
-  search_term: string;
-  page: number;
-  per_page: number;
-}
+import { IDataPage, IParamsConfig } from "./types";
+
 const defaultValuesParamsConfig = {
   search_term: "",
   page: 1,
