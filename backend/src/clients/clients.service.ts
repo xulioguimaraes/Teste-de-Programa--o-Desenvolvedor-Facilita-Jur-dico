@@ -156,9 +156,6 @@ export class ClientsService {
       pontoAtual = nearestClient;
     }
 
-    // Adicione o ponto de partida novamente ao final da rota
-    route.push(valueInitial);
-
     return route;
   }
 }
