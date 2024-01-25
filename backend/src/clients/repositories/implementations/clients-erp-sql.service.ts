@@ -84,7 +84,6 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
       ? `WHERE name ILIKE $3 OR phone ILIKE $3 OR email ILIKE $3`
       : '';
 
-    console.log({ page, per_page, search_term });
     const query = {
       text: `SELECT * FROM clients ${searchCondition} ORDER BY id LIMIT $1 OFFSET $2`,
       values: search_term
