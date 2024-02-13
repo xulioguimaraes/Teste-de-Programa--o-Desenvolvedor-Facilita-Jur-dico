@@ -89,7 +89,7 @@ const Rows = ({ onDelete, onEdit, ...row }: IRowProps) => {
       <TableCell align="right">{row.email}</TableCell>
       <TableCell align="right">{row.phone}</TableCell>
       <TableCell align="right">
-        {row.coordinatex}, {row.coordinatey}
+        {row.distance}
       </TableCell>
     </TableRow>
   );
@@ -119,7 +119,7 @@ export const TableHome = ({
             <TableCell align="right">Nome</TableCell>
             <TableCell align="right">Email</TableCell>
             <TableCell align="right">Telefone</TableCell>
-            <TableCell align="right">Coordenadas (x, y)</TableCell>
+            <TableCell align="right">Distancia</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

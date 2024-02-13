@@ -3,8 +3,7 @@ export interface IDataPage {
   id: number;
   phone: string;
   email: string;
-  coordinatex: string;
-  coordinatey: string;
+  distance: string;
 }
 export interface IParamsConfig {
   search_term: string;

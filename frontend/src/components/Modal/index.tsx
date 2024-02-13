@@ -24,8 +24,7 @@ interface IData {
   id: number;
   phone: string;
   email: string;
-  coordinatey: number;
-  coordinatex: number;
+  distance: string;
 }
 
 export const Modal = ({ onClose, open }: IModalProps) => {
@@ -86,7 +85,7 @@ export const Modal = ({ onClose, open }: IModalProps) => {
             <strong>Nome</strong>
             <strong>Telefone</strong>
             <strong>Email</strong>
-            <strong>Coordenadas (x, y)</strong>
+            <strong>Distancia</strong>
           </Box>
           <Box>
             {data.map((item) => (
@@ -100,9 +99,7 @@ export const Modal = ({ onClose, open }: IModalProps) => {
                   <span>{item.name}</span>
                   <span>{item.phone}</span>
                   <span>{item.email}</span>
-                  <span>
-                    {item.coordinatex}, {item.coordinatey}
-                  </span>
+                  <span>{item.distance}</span>
                 </Box>
                 <Divider />
               </>
