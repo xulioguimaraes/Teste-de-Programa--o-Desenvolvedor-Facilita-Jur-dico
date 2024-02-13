@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CLientDTO {
   id?: number;
@@ -22,15 +22,27 @@ export class CLientDTO {
   phone: string;
 
   @IsString({
-    message: 'Você deve enviar a coordenada X',
+    message: 'Você deve enviar o endereço',
   })
   @ApiProperty()
-  coordinatex: string;
-  @IsString({
-    message: 'Você deve enviar a coordenada Y',
-  })
+  address: string;
+  @IsNumber(
+    {},
+    {
+      message: 'Você deve enviar a latitude',
+    },
+  )
   @ApiProperty()
-  coordinatey: string;
+  latitude: number;
+
+  @IsNumber(
+    {},
+    {
+      message: 'Você deve enviar a longitude',
+    },
+  )
+  @ApiProperty()
+  longitude: number;
 }
 
 export class ListClientsRequst {

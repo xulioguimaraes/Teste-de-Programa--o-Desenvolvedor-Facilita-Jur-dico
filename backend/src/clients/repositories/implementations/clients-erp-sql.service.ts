@@ -11,6 +11,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Pool } from 'pg';
+import axios from 'axios';
 
 @Injectable()
 export class CustomerERPRepositorySql implements ClientsERPRepository {
@@ -31,17 +32,31 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
     try {
       const emailExists = await this.emailExists(data.email);
 
+      const directionsURL =
+        'https://maps.googleapis.com/maps/api/directions/json';
+      const origin = '-5.1348173,-49.3320079'; // Latitude e longitude do ponto de partida
+      const destination = `${data.latitude},${data.longitude}`;
+      const response = await axios.get(directionsURL, {
+        params: {
+          origin: origin,
+          destination: destination,
+          key: process.env.API_GOOGLE_KEY,
+        },
+      });
+      const distance = response?.data.routes[0].legs[0].distance.text || null;
       if (emailExists) {
         throw new BadRequestException('E-mail já cadastrado');
       }
       const query = {
-        text: 'INSERT INTO clients (name, email, phone, coordinateX, coordinateY) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        text: 'INSERT INTO clients (name, email, phone, address, latitude, longitude, distance) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
         values: [
           data.name,
           data.email,
           data.phone,
-          data.coordinatex,
-          data.coordinatey,
+          data.address,
+          data.latitude,
+          data.longitude,
+          distance,
         ],
       };
 
