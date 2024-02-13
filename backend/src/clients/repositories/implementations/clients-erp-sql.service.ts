@@ -28,25 +28,29 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
     return count > 0;
   }
 
+  async getDistance(latitude: number, longitude: number) {
+    const directionsURL =
+      'https://maps.googleapis.com/maps/api/directions/json';
+    const origin = '-5.1348173,-49.3320079'; // Latitude e longitude do ponto de partida
+    const destination = `${latitude},${longitude}`;
+    const response = await axios.get(directionsURL, {
+      params: {
+        origin: origin,
+        destination: destination,
+        key: process.env.API_GOOGLE_KEY,
+      },
+    });
+    return response?.data.routes[0].legs[0].distance.text || null;
+  }
+
   async create(data: CLientDTO): Promise<void> {
     try {
       const emailExists = await this.emailExists(data.email);
 
-      const directionsURL =
-        'https://maps.googleapis.com/maps/api/directions/json';
-      const origin = '-5.1348173,-49.3320079'; // Latitude e longitude do ponto de partida
-      const destination = `${data.latitude},${data.longitude}`;
-      const response = await axios.get(directionsURL, {
-        params: {
-          origin: origin,
-          destination: destination,
-          key: process.env.API_GOOGLE_KEY,
-        },
-      });
-      const distance = response?.data.routes[0].legs[0].distance.text || null;
       if (emailExists) {
         throw new BadRequestException('E-mail já cadastrado');
       }
+      const distance = await this.getDistance(data.latitude, data.longitude);
       const query = {
         text: 'INSERT INTO clients (name, email, phone, address, latitude, longitude, distance) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
         values: [
@@ -66,9 +70,20 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
     }
   }
   async update(id: string, data: CLientDTO): Promise<void> {
+    const distance = await this.getDistance(data.latitude, data.longitude);
+
     const query = {
-      text: 'UPDATE clients SET name = $2, email = $3, phone = $4 WHERE id = $1 RETURNING *',
-      values: [id, data.name, data.email, data.phone],
+      text: 'UPDATE clients SET name = $2, email = $3, phone = $4, address = $5, latitude = $6, longitude = $7, distance = $8 WHERE id = $1 RETURNING *',
+      values: [
+        id,
+        data.name,
+        data.email,
+        data.phone,
+        data.address,
+        data.latitude,
+        data.longitude,
+        distance,
+      ],
     };
 
     try {
