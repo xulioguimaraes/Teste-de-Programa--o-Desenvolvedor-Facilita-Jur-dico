@@ -15,11 +15,15 @@ import { Controller, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { TextMaskCustom } from "../../components/TextMaskCustom";
 import clients from "../../services/clients";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useStackbar } from "../../hooks/useSnackBar";
-import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 import { useEffect, useState } from "react";
 import { IForm } from "./types";
+import LocationSearchInput from "../../components/LocationSearchInput";
+
+interface IAddress {
+  address: string;
+  latLng: { lat: number; lng: number };
+}
 
 export const Register = () => {
   const navigate = useNavigate();
@@ -31,8 +35,6 @@ export const Register = () => {
     handleSubmit,
     control,
     formState: { errors },
-    getValues,
-    watch,
     setValue,
     reset,
   } = useForm({
@@ -40,8 +42,9 @@ export const Register = () => {
       name: "",
       email: "",
       phone: "",
-      coordX: 0,
-      coordY: 0,
+      address: "",
+      latitude: 0,
+      longitude: 0,
     },
   });
 
@@ -52,8 +55,6 @@ export const Register = () => {
 
       reset({
         ...response.data,
-        coordX: response.data.coordinatex,
-        coordY: response.data.coordinatey,
       });
     } catch (error: any) {
       const errorMessage = error?.response?.data?.message;
@@ -67,19 +68,9 @@ export const Register = () => {
     }
   };
   const onSubmit = async (data: IForm) => {
-    if (data.coordX === 0 && data.coordY === 0) {
-      setOpenSnack({
-        open: true,
-        message: "Uma das coordenadas de X e Y precisão ser maior do que ZERO",
-        variant: "error",
-      });
-      return;
-    }
     try {
       const newData = {
         ...data,
-        coordinatex: String(data.coordX),
-        coordinatey: String(data.coordY),
       };
       if (params?.id) {
         await clients.update(params?.id, newData);
@@ -101,36 +92,19 @@ export const Register = () => {
       });
     }
   };
-  const handleAddCoordinateX = () => {
-    const valueX = getValues("coordX");
-
-    setValue("coordX", valueX + 1);
-  };
-  const handleRemoveCoordinateX = () => {
-    const valueX = getValues("coordX");
-    if (valueX <= 0) {
-      return;
-    }
-    setValue("coordX", valueX - 1);
-  };
-  const handleAddCoordinateY = () => {
-    const valueY = getValues("coordY");
-
-    setValue("coordY", valueY + 1);
-  };
-  const handleRemoveCoordinateY = () => {
-    const valueY = getValues("coordY");
-    if (valueY <= 0) {
-      return;
-    }
-    setValue("coordY", valueY - 1);
-  };
 
   useEffect(() => {
     if (params?.id) {
       getOldValues();
     }
   }, []);
+  const handleLocationSelect = async (selectedLocation: IAddress) => {
+    setValue("address", selectedLocation.address);
+    setValue("latitude", selectedLocation.latLng.lat);
+    setValue("longitude", selectedLocation.latLng.lng);
+
+    // Use the selected location data as needed in your application.
+  };
 
   return (
     <>
@@ -207,32 +181,16 @@ export const Register = () => {
                   )}
                 />
               </FormControl>
-            </Box>
-            <Box display={"flex"} gap={2}>
-              <FormControl>
-                <Typography>Coordenada X</Typography>
-                <Box display={"flex"} alignItems={"center"}>
-                  <IconButton onClick={handleRemoveCoordinateX}>
-                    <RemoveCircleIcon />
-                  </IconButton>
-                  <Chip label={watch("coordX")} />
-                  <IconButton size="small" onClick={handleAddCoordinateX}>
-                    <AddCircleIcon />
-                  </IconButton>
-                </Box>
-              </FormControl>
-              <FormControl>
-                <Typography>Coordenada Y</Typography>
-                <Box display={"flex"} alignItems={"center"}>
-                  <IconButton onClick={handleRemoveCoordinateY}>
-                    <RemoveCircleIcon />
-                  </IconButton>
-                  <Chip label={watch("coordY")} />
-                  <IconButton size="small" onClick={handleAddCoordinateY}>
-                    <AddCircleIcon />
-                  </IconButton>
-                </Box>
-              </FormControl>
+              <Controller
+                control={control}
+                name="address"
+                render={({ field }) => (
+                  <LocationSearchInput
+                    {...field}
+                    onSelect={handleLocationSelect}
+                  />
+                )}
+              />
             </Box>
           </Stack>
           <Box display={"flex"} justifyContent={"flex-end"} mt={2} gap={2}>

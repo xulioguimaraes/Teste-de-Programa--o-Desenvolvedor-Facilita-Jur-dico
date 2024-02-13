@@ -4,8 +4,9 @@ interface IForm {
   name: string;
   phone: string;
   email: string;
-  coordinatex: string;
-  coordinatey: string;
+  address: string;
+  latitude: number;
+  longitude: number;
 }
 interface IParamsConfig {
   search_term: string;

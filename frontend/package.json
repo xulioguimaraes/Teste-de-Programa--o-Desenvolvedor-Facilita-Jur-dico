@@ -19,11 +19,13 @@
     "react-dom": "latest",
     "react-hook-form": "^7.49.3",
     "react-imask": "^7.3.0",
+    "react-places-autocomplete": "^7.3.0",
     "react-router-dom": "^6.21.3"
   },
   "devDependencies": {
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-places-autocomplete": "^7.2.14",
     "@vitejs/plugin-react": "latest",
     "dotenv": "^16.4.1",
     "typescript": "latest",
