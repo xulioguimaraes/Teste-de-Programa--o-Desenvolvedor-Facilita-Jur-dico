@@ -29,6 +29,7 @@ export const Register = () => {
   const navigate = useNavigate();
   const { setOpenSnack } = useStackbar();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const params = useParams();
   const {
     register,
@@ -68,6 +69,7 @@ export const Register = () => {
     }
   };
   const onSubmit = async (data: IForm) => {
+    setIsLoadingSubmit(true);
     try {
       const newData = {
         ...data,
@@ -92,6 +94,8 @@ export const Register = () => {
         message: errorMessage || "Error ao salvar infromações do cliente",
         variant: "error",
       });
+    } finally {
+      setIsLoadingSubmit(false);
     }
   };
 
@@ -155,6 +159,7 @@ export const Register = () => {
                   name="email"
                   variant="standard"
                   error={!!errors?.email}
+                  disabled={!!params?.id}
                 />
               </FormControl>
 
@@ -207,6 +212,7 @@ export const Register = () => {
                 type="button"
                 color="secondary"
                 variant="outlined"
+                disabled={isLoadingSubmit}
               >
                 voltar
               </Button>
@@ -219,6 +225,7 @@ export const Register = () => {
                 type="submit"
                 color="secondary"
                 variant="contained"
+                disabled={isLoadingSubmit}
               >
                 Salvar
               </Button>
