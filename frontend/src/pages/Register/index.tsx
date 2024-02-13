@@ -71,6 +71,8 @@ export const Register = () => {
     try {
       const newData = {
         ...data,
+        latitude: +data.latitude,
+        longitude: +data.longitude,
       };
       if (params?.id) {
         await clients.update(params?.id, newData);

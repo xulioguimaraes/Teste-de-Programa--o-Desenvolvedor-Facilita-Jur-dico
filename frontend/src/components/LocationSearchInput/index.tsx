@@ -10,10 +10,14 @@ interface LocationSearchInputProps {
     address: string;
     latLng: { lat: number; lng: number };
   }) => void;
+  value: string;
 }
 
-const LocationSearchInput: FC<LocationSearchInputProps> = ({ onSelect }) => {
-  const [address, setAddress] = useState<string>("");
+const LocationSearchInput: FC<LocationSearchInputProps> = ({
+  onSelect,
+  value ='',
+}) => {
+  const [address, setAddress] = useState<string>(value);
 
   const handleChange = (value: string) => {
     setAddress(value);

@@ -9,11 +9,12 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  IconButton,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { CSSProperties, ReactNode, useEffect, useState } from "react";
 import clients from "../../services/clients";
 import { useStackbar } from "../../hooks/useSnackBar";
-
+import DirectionsIcon from "@mui/icons-material/Directions";
 interface IModalProps {
   open: boolean;
   onClose: () => void;
@@ -25,7 +26,29 @@ interface IData {
   phone: string;
   email: string;
   distance: string;
+  latitude: number;
+  longitude: number;
 }
+const CellModal = ({
+  children,
+  styles,
+}: {
+  children: ReactNode;
+  styles?: CSSProperties;
+}) => {
+  return (
+    <span
+      style={{
+        whiteSpace: "nowrap",
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        ...styles,
+      }}
+    >
+      {children}
+    </span>
+  );
+};
 
 export const Modal = ({ onClose, open }: IModalProps) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -51,6 +74,11 @@ export const Modal = ({ onClose, open }: IModalProps) => {
   useEffect(() => {
     getClients();
   }, []);
+  const openGoogleMaps = (itemRow: IData) => {
+    const mapsUrl = `https://www.google.com/maps?q=${itemRow.latitude},${itemRow.longitude}`;
+    window.open(mapsUrl);
+  };
+
   return (
     <Dialog
       open={open}
@@ -79,13 +107,18 @@ export const Modal = ({ onClose, open }: IModalProps) => {
           <Box
             mt={2}
             display={"grid"}
-            gridTemplateColumns={"1fr 1fr 1fr 1fr"}
+            gridTemplateColumns={"1fr 150px 1fr 80px 80px"}
             gap={2}
+            fontWeight="bold"
+            whiteSpace="nowrap"
+            overflow="hidden"
+            textOverflow="ellipsis"
           >
-            <strong>Nome</strong>
-            <strong>Telefone</strong>
-            <strong>Email</strong>
-            <strong>Distancia</strong>
+            <CellModal>Nome</CellModal>
+            <CellModal>Telefone</CellModal>
+            <CellModal>Email</CellModal>
+            <CellModal>Distancia</CellModal>
+            <CellModal>Ir para</CellModal>
           </Box>
           <Box>
             {data.map((item) => (
@@ -93,13 +126,24 @@ export const Modal = ({ onClose, open }: IModalProps) => {
                 <Box
                   key={item.email}
                   display={"grid"}
-                  gridTemplateColumns={"1fr 1fr 1fr 1fr"}
+                  gridTemplateColumns={"1fr 150px 1fr 80px 80px"}
                   gap={2}
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  textOverflow="ellipsis"
                 >
-                  <span>{item.name}</span>
-                  <span>{item.phone}</span>
-                  <span>{item.email}</span>
-                  <span>{item.distance}</span>
+                  <CellModal>{item.name}</CellModal>
+                  <CellModal>{item.phone}</CellModal>
+                  <CellModal>{item.email}</CellModal>
+                  <CellModal>{item.distance}</CellModal>
+                  <span>
+                    <IconButton
+                      size="small"
+                      onClick={() => openGoogleMaps(item)}
+                    >
+                      <DirectionsIcon />
+                    </IconButton>
+                  </span>
                 </Box>
                 <Divider />
               </>
