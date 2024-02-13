@@ -132,7 +132,18 @@ export class CustomerERPRepositorySql implements ClientsERPRepository {
   }
   async calculateDistance(): Promise<ClientTypes[]> {
     const query = {
-      text: `SELECT * FROM clients`,
+      text: `SELECT *,
+      CASE
+          WHEN distance IS NULL THEN null
+          ELSE substring(distance, '([0-9]+(\.[0-9]+)?)')::numeric
+      END AS distance_numeric
+FROM clients
+ORDER BY
+ CASE
+   WHEN distance IS NULL THEN 1  
+   ELSE 0  
+ END,
+ distance_numeric ASC NULLS LAST;`,
     };
 
     const result = await this.pool.query(query);

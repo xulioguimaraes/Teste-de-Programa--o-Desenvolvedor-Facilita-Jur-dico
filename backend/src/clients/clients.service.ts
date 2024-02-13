@@ -1,11 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CLientDTO, ClientTypes, ListClientsRequst } from './dtos/clients';
 import { ClientsERPRepository } from './repositories/clients-erp.service';
-interface Cliente {
-  id?: number;
-  coordinatex: number;
-  coordinatey: number;
-}
+
 @Injectable()
 export class ClientsService {
   constructor(private readonly clientsERPRepository: ClientsERPRepository) {}
@@ -89,9 +85,7 @@ export class ClientsService {
     try {
       const result = await this.clientsERPRepository.calculateDistance();
 
-      const rotaOtimizada = this.resolveTSP(result);
-
-      return rotaOtimizada as any;
+      return result as any;
     } catch (error) {
       if (
         error instanceof HttpException &&
@@ -103,59 +97,5 @@ export class ClientsService {
         throw new Error(`Error ao deletar cliente: ${error}`);
       }
     }
-  }
-  calculateDistancePoint(pontoA: Cliente, pontoB: Cliente): number {
-    // a fórmula euclidiana foi lógica para calcular a distância entre dois pontos cartesianos
-    return Math.sqrt(
-      Math.pow(pontoA.coordinatex - pontoB.coordinatex, 2) +
-        Math.pow(pontoA.coordinatey - pontoB.coordinatey, 2),
-    );
-  }
-
-  findNearestClient(
-    pontoAtual: ClientTypes,
-    pontos: ClientTypes[],
-  ): ClientTypes {
-    let nearestClient = pontos[0];
-    let shortestDistance = this.calculateDistancePoint(
-      pontoAtual,
-      nearestClient,
-    );
-
-    for (const ponto of pontos) {
-      const distance = this.calculateDistancePoint(pontoAtual, ponto);
-      if (distance < shortestDistance) {
-        shortestDistance = distance;
-        nearestClient = ponto;
-      }
-    }
-
-    return nearestClient;
-  }
-
-  resolveTSP(clientes: ClientTypes[]): ClientTypes[] {
-    const route: ClientTypes[] = [];
-
-    const valueInitial = {
-      id: -1,
-      coordinatex: 0,
-      coordinatey: 0,
-      name: 'EMPRESA',
-      email: '',
-      phone: '',
-    };
-    let pontoAtual: ClientTypes = valueInitial;
-    let remainingPoints = [...clientes];
-
-    while (remainingPoints.length > 0) {
-      const nearestClient = this.findNearestClient(pontoAtual, remainingPoints);
-      route.push(nearestClient);
-      remainingPoints = remainingPoints.filter(
-        (ponto) => ponto.id !== nearestClient.id,
-      );
-      pontoAtual = nearestClient;
-    }
-
-    return route;
   }
 }

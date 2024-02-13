@@ -71,7 +71,5 @@ export type ClientTypes = {
 
   phone: string;
 
-  coordinatex: number;
-
-  coordinatey: number;
+  distance: string;
 };
