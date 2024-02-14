@@ -2,7 +2,7 @@
 
 ## Sistema de Gerenciamento de Clientes
 
-É uma plataforma completa para gerenciar clientes. Possibilitamos o cadastro e a visualização de clientes, incluindo nome, email e telefone. Além disso, implementamos uma funcionalidade avançada de otimização de rotas, calculando a rota mais eficiente para visitar todos os clientes no mapa bidimensional.
+É uma plataforma completa para gerenciar clientes. Possibilitamos o cadastro e a visualização de clientes, incluindo nome, email e telefone. Além disso, implementamos uma funcionalidade avançada de otimização de rotas, calculando a rota mais eficiente para visitar todos os clientes no mapa.
 
 _Recursos Principais:_
 
