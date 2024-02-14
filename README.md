@@ -57,7 +57,7 @@ Agora você tem uma cópia local do projeto em seu ambiente de desenvolvimento.
 1. **Configuração do .env:**
 
    - Na pasta `backend`, copie o arquivo `.env.example` e renomeie para `.env`.
-   - Preencha as variáveis de ambiente no arquivo `.env`, incluindo as informações de conexão com o banco de dados (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`) e a URL do site (`SITE_URL`).
+   - Preencha as variáveis de ambiente no arquivo `.env`, incluindo as informações de conexão com o banco de dados (`DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD`, `DB_DATABASE`), a URL do site (`SITE_URL`) e a chave da api do Google (`API_GOOGLE_KEY`).
 
 2. **Criação do Banco de Dados:**
 
